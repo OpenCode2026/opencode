@@ -149,13 +149,20 @@ const SUPPORTED_EVENTS = [...USER_EVENTS, ...REPO_EVENTS] as const
 type UserEvent = (typeof USER_EVENTS)[number]
 type RepoEvent = (typeof REPO_EVENTS)[number]
 
-// Parses GitHub remote URLs in various formats:
-// - https://github.com/owner/repo.git
-// - https://github.com/owner/repo
-// - git@github.com:owner/repo.git
-// - git@github.com:owner/repo
-// - ssh://git@github.com/owner/repo.git
-// - ssh://git@github.com/owner/repo
+/**
+ * Parses GitHub remote URLs in various formats.
+ *
+ * Supported formats:
+ * - https://github.com/owner/repo.git
+ * - https://github.com/owner/repo
+ * - git@github.com:owner/repo.git
+ * - git@github.com:owner/repo
+ * - ssh://git@github.com/owner/repo.git
+ * - ssh://git@github.com/owner/repo
+ *
+ * @param url The GitHub remote URL to parse
+ * @returns Object with owner and repo, or null if parsing fails
+ */
 export function parseGitHubRemote(url: string): { owner: string; repo: string } | null {
   const match = url.match(/^(?:(?:https?|ssh):\/\/)?(?:git@)?github\.com[:/]([^/]+)\/([^/]+?)(?:\.git)?$/)
   if (!match) return null
